@@ -2,26 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.flex-center {
+	@apply flex justify-center items-center;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.flex-between {
+	@apply flex justify-between items-center;
+}
+
+.flex-around {
+	@apply flex justify-around items-center;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+	font-size: 1em;
+	font-family: verdana;
+	user-select: none;
+	@apply text-secondary m-0;
+}
+
+header {
+	@apply absolute top-0 w-full flex-around p-2;
+	ul {
+		@apply flex-between gap-6 md:gap-8;
+		li {
+			@apply cursor-pointer font-semibold;
+		}
+	}
+	input {
+		@apply p-2 rounded-md text-secondary border-2 border-gray-500;
+	}
+}
+
+section {
+	@apply w-full flex-center flex-col;
+}
+
+h1 {
+	font-size: clamp(2rem, 5vw, 4rem);
+	@apply font-bold;
+}
+
+h2 {
+	font-size: clamp(1.75rem, 4vw, 3rem);
+	@apply font-bold text-primary;
+}
+
+h5 {
+	font-size: clamp(0.75rem, 3.5vw, 1.25rem);
+	@apply text-variant;
+}
+
+p {
+	font-size: clamp(0.5rem, 3.25vw, 1.25rem);
 }
