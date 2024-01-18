@@ -3,6 +3,22 @@ import Image from "next/image";
 import plusSvg from "@/public/plus.svg";
 import { useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
+
+const FadeInUpVariants = {
+	initial: {
+		opacity: 0,
+		y: 100,
+	},
+	animate: {
+		opacity: 1,
+		y: 0,
+		transition: {
+			delay: 0.2,
+			duration: 0.6,
+		},
+	},
+};
 
 export default function Faq() {
 	const [openIndex, setOpenIndex] = useState(-1);
@@ -48,12 +64,18 @@ export default function Faq() {
 	));
 	return (
 		<>
-			<section className="py-28 gap-10">
+			<motion.section
+				className="py-28 gap-10"
+				variants={FadeInUpVariants}
+				initial="initial"
+				whileInView={"animate"}
+				viewport={{ once: true }}
+			>
 				<h1>FAQ</h1>
 				<figure className="w-4/5 bg-secondary rounded-2xl text-primary">
 					{faq}
 				</figure>
-			</section>
+			</motion.section>
 			<section className="py-28 gap-10 bg-secondary">
 				<h1 className="text-primary">Shop Now</h1>
 				<Link
