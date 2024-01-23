@@ -1,25 +1,27 @@
-import womenClothes from "@/public/womenClothes.jpg";
-import menClothes from "@/public/menClothes.jpg";
-import kidsClothes from "@/public/kidsClothes.jpg";
+import womenClothes from "@/public/assets/womenClothes.jpg";
+import menClothes from "@/public/assets/menClothes.jpg";
+import kidsClothes from "@/public/assets/kidsClothes.jpg";
 import { category } from "@/type";
 import CategoryCard from "./categoryCard";
+import { getScopedI18n } from "@/locales/server";
 
-export default function Categories() {
+export default async function Categories() {
+	const t = await getScopedI18n("nav");
 	const data: category[] = [
 		{
 			image: womenClothes,
-			title: "Women",
-			p: "Chic and timeless styles for her.",
+			title: t("women"),
+			p: t("women_p"),
 		},
 		{
 			image: menClothes,
-			title: "Men",
-			p: "Modern essentials for a sharp look.",
+			title: t("men"),
+			p: t("men_p"),
 		},
 		{
 			image: kidsClothes,
-			title: "Kids",
-			p: "Playful outfits for little adventures.",
+			title: t("kids"),
+			p: t("kids_p"),
 		},
 	];
 

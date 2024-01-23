@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image";
-import plusSvg from "@/public/plus.svg";
+import plusSvg from "@/public/assets/plus.svg";
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useScopedI18n } from "@/locales/client";
 
 const FadeInUpVariants = {
 	initial: {
@@ -23,19 +24,20 @@ const FadeInUpVariants = {
 export default function Faq() {
 	const [openIndex, setOpenIndex] = useState(-1);
 	const [isCross, setIsCross] = useState(false);
+	const t = useScopedI18n("faq");
 
 	const data = [
 		{
-			q: "What is YL?",
-			a: "YL store offers clothing for men, women, and kids",
+			q: t("q1"),
+			a: t("a1"),
 		},
 		{
-			q: "How to buy a product?",
-			a: "YL makes it easy for you. Send a WhatsApp message to the seller with your address and any other relevant information",
+			q: t("q2"),
+			a: t("a2"),
 		},
 		{
-			q: "What is the payment method?",
-			a: "But now, Pay later!, YL requires payment upon delivery for better service.",
+			q: t("q3"),
+			a: t("a3"),
 		},
 	];
 
@@ -77,12 +79,12 @@ export default function Faq() {
 				</figure>
 			</motion.section>
 			<section className="py-28 gap-10 bg-secondary">
-				<h1 className="text-primary">Shop Now</h1>
+				<h1 className="text-primary">{t("shop")}</h1>
 				<Link
 					href="#categories"
 					className="px-4 py-2 rounded-lg shadow-sm shadow-black w-fit font-bold bg-secondary text-primary"
 				>
-					Get Started
+					{t("started")}
 				</Link>
 			</section>
 		</>

@@ -5,3 +5,12 @@ export interface category {
 	title: string;
 	p: string;
 }
+
+export interface product {
+	id: string;
+	title: string;
+	image: StaticImageData;
+	description: string;
+	price: number;
+	created_at: string;
+}

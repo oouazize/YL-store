@@ -11,12 +11,19 @@ const config: Config = {
 			backgroundColor: {
 				primary: "#F2F2F2",
 				secondary: "#1F1F1F",
-				variant: "#D1D1D1",
+				gray: "#D1D1D1",
+			},
+			borderColor: {
+				primary: "#F2F2F2",
+				secondary: "#1F1F1F",
+				gray: "#D1D1D1",
 			},
 			colors: {
 				primary: "#F2F2F2",
 				secondary: "#1F1F1F",
-				variant: "#D1D1D1",
+				gray: "#D1D1D1",
+				priceColor: "#0050E6",
+				price: "#72A1F7",
 			},
 		},
 	},
