@@ -3,10 +3,10 @@ import menClothes from "@/public/assets/menClothes.jpg";
 import kidsClothes from "@/public/assets/kidsClothes.jpg";
 import { category } from "@/type";
 import CategoryCard from "./categoryCard";
-import { getScopedI18n } from "@/locales/server";
+import { useTranslation } from "@/app/i18n";
 
-export default async function Categories() {
-	const t = await getScopedI18n("nav");
+export default async function Categories({ lng }: { lng: string }) {
+	const { t } = await useTranslation(lng, 'home');
 	const data: category[] = [
 		{
 			image: womenClothes,

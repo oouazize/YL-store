@@ -4,7 +4,7 @@ import plusSvg from "@/public/assets/plus.svg";
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useScopedI18n } from "@/locales/client";
+import { useTranslation } from "@/app/i18n/i18n-client";
 
 const FadeInUpVariants = {
 	initial: {
@@ -21,10 +21,10 @@ const FadeInUpVariants = {
 	},
 };
 
-export default function Faq() {
+export default function Faq({ lng }: { lng: string }) {
 	const [openIndex, setOpenIndex] = useState(-1);
 	const [isCross, setIsCross] = useState(false);
-	const t = useScopedI18n("faq");
+	const { t } = useTranslation(lng, 'home');
 
 	const data = [
 		{

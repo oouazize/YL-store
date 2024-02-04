@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import { useChangeLocale, useCurrentLocale } from "@/locales/client";
 import Image from "next/image";
@@ -13,7 +12,7 @@ const LocaleSwitcher = () => {
 			<Image src={lang} alt="lang" />
 			<ul>
 				<li>
-					<b>{currentLocale}</b>
+					<b className="hidden md:block">{currentLocale}</b>
 					<i className="fa fa-angle-down" aria-hidden="true"></i>
 					<div className="triangle"></div>
 					<ul className="ul">

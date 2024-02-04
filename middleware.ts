@@ -1,68 +1,35 @@
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
-import { createI18nMiddleware } from "next-international/middleware";
+import { NextRequest, NextResponse } from 'next/server'
+import acceptLanguage from 'accept-language'
+import { fallbackLng, languages, cookieName } from './app/i18n/settings'
 
-const I18Middleware = createI18nMiddleware({
-	locales: ["en", "fr"],
-	defaultLocale: "en",
-});
-
-export async function middleware(request: NextRequest) {
-	// let response = NextResponse.next({
-	// 	request: {
-	// 		headers: request.headers,
-	// 	},
-	// });
-
-	// const supabase = createServerClient(
-	// 	process.env.NEXT_PUBLIC_SUPABASE_URL!,
-	// 	process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-	// 	{
-	// 		cookies: {
-	// 			get(name: string) {
-	// 				return request.cookies.get(name)?.value;
-	// 			},
-	// 			set(name: string, value: string, options: CookieOptions) {
-	// 				request.cookies.set({
-	// 					name,
-	// 					value,
-	// 					...options,
-	// 				});
-	// 				response = NextResponse.next({
-	// 					request: {
-	// 						headers: request.headers,
-	// 					},
-	// 				});
-	// 				response.cookies.set({
-	// 					name,
-	// 					value,
-	// 					...options,
-	// 				});
-	// 			},
-	// 			remove(name: string, options: CookieOptions) {
-	// 				request.cookies.set({
-	// 					name,
-	// 					value: "",
-	// 					...options,
-	// 				});
-	// 				response = NextResponse.next({
-	// 					request: {
-	// 						headers: request.headers,
-	// 					},
-	// 				});
-	// 				response.cookies.set({
-	// 					name,
-	// 					value: "",
-	// 					...options,
-	// 				});
-	// 			},
-	// 		},
-	// 	}
-	// );
-
-	return I18Middleware(request);
-}
+acceptLanguage.languages(languages)
 
 export const config = {
-	matcher: ["/((?!api|static|.*\\..*|_next|favicon.ico|robots.txt).*)"],
-};
+  // matcher: '/:lng*'
+  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js).*)']
+}
+
+export function middleware(req: NextRequest) {
+  let lng
+  if (req.cookies.has(cookieName)) lng = acceptLanguage.get(req.cookies.get(cookieName)?.value)
+  if (!lng) lng = acceptLanguage.get(req.headers.get('Accept-Language'))
+  if (!lng) lng = fallbackLng
+
+  // Redirect if lng in path is not supported
+  if (
+    !languages.some(loc => req.nextUrl.pathname.startsWith(`/${loc}`)) &&
+    !req.nextUrl.pathname.startsWith('/_next')
+  ) {
+    return NextResponse.redirect(new URL(`/${lng}${req.nextUrl.pathname}`, req.url))
+  }
+
+  if (req.headers.has('referer')) {
+    const refererUrl = new URL(String(req.headers.get('referer')))
+    const lngInReferer = languages.find((l) => refererUrl.pathname.startsWith(`/${l}`))
+    const response = NextResponse.next()
+    if (lngInReferer) response.cookies.set(cookieName, lngInReferer)
+    return response
+  }
+
+  return NextResponse.next()
+}

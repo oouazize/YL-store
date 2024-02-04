@@ -1,16 +1,17 @@
 import Categories from "@/components/home/categories";
 import Cover from "@/components/home/cover";
 import Faq from "@/components/home/faq";
-import { Provider } from "./provider";
 
-export default function Page() {
+export default function Page({
+	params: { locale },
+}: {
+	params: { locale: string };
+}) {
 	return (
 		<>
-			<Cover />
-			<Categories />
-			<Provider>
-				<Faq />
-			</Provider>
+			<Cover lng={locale} />
+			<Categories lng={locale} />
+			<Faq lng={locale} />
 		</>
 	);
 }

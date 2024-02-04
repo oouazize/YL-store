@@ -7,7 +7,7 @@ interface ButtonProps
 		VariantProps<typeof ButtonVariants> {}
 
 const ButtonVariants = cva(
-	"gap-6 bg-primary border-2 rounded-2xl w-[210px] text-left flex flex-col justify-between p-4",
+	"gap-6 bg-primary border-2 rounded-2xl w-[140px] lg:w-[210px] text-left flex flex-col justify-between p-4",
 	{
 		variants: {
 			variant: {

@@ -9,8 +9,17 @@ export interface category {
 export interface product {
 	id: string;
 	title: string;
-	image: StaticImageData;
+	images: StaticImageData[];
 	description: string;
 	price: number;
 	created_at: string;
+}
+
+export interface newProduct {
+	title: string;
+	images: File[];
+	description?: string;
+	price: number;
+	item: string;
+	sizes: string[];
 }

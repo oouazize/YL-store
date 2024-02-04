@@ -3,15 +3,14 @@ import logo from "@/public/assets/logo1.png";
 import Image from "next/image";
 import React, { useState, useRef, useEffect } from "react";
 import { IoSearchSharp } from "react-icons/io5";
-import LanguageChanger from "./languageChanger";
-import { useScopedI18n } from "@/locales/client";
 import Link from "next/link";
+import { useTranslation } from '@/app/i18n/i18n-client';
 
-export default function Nav() {
+export default function Nav({lng}: {lng: string}) {
 	const [searchText, setSearchText] = useState("");
 	const [openInput, setOpenInput] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
-	const t = useScopedI18n("nav");
+	const { t } = useTranslation(lng, 'home');
 
 	useEffect(() => {
 		if (openInput && inputRef.current) inputRef.current.focus();
@@ -40,7 +39,7 @@ export default function Nav() {
 
 	return (
 		<header>
-			<Image src={logo} alt="logo" className="w-9 h-9" />
+			<Link href="/"><Image src={logo} alt="logo" className="w-9 h-9" /></Link>
 			<ul className={`${openInput ? "hidden md:flex" : ""}`}>
 				<Link href="/category/Women">{t("women")}</Link>
 				<Link href="/category/Men">{t("men")}</Link>
@@ -58,7 +57,6 @@ export default function Nav() {
 					className="w-[32px] h-[32px] cursor-pointer"
 					onClick={handleSearch}
 				/>
-				<LanguageChanger />
 			</div>
 		</header>
 	);

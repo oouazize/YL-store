@@ -1,100 +1,49 @@
 "use client";
-import Button from "@/lib/ui/button";
+import Button from "@/components/ui/button";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import plusSvg from "@/public/assets/plusicon.svg";
-import { useScopedI18n } from "@/locales/client";
 import { MdSort } from "react-icons/md";
-import { product } from "@/type";
-import ProductCard from "@/components/product/productCard";
-import image from "@/public/assets/menClothes.jpg";
+import ProductDetail from "@/components/product/productDetail";
+import CreateProduct from "@/components/product/createProduct";
+import ProductList from "@/components/product/productList";
+import { useTranslation } from "@/app/i18n/i18n-client";
+import productList from "@/hooks/productList";
 
-export default function page() {
-	const t = useScopedI18n("items");
-	const [activeItem, setActiveItem] = useState(t("all"));
-	const [selectedProduct, setSelectedProduct] = useState({} as product);
-	const [products, setProducts] = useState([] as product[]);
+export default function page({
+	params: { locale },
+}: {
+	params: { locale: string };
+}) {
+	const all = productList(locale);
+	const { t } = useTranslation(locale, "category");
+	const [activeItem, setActiveItem] = useState("");
 	const itemsData = [
 		t("all"),
-		t("veste"),
-		t("pull"),
+		t("jacket"),
+		t("sweater"),
 		t("tshirt"),
-		t("jean"),
-		t("short"),
-		t("chemise"),
-		t("costume"),
-	];
-
-	const data: product[] = [
-		{
-			id: "1",
-			title: "CARTELO-Veste brodée de haute qualité pour homme",
-			image,
-			description: "vsdkj bvjsdk vsdbjk vdbsjk vcsdhk csdhk vbsdhk",
-			price: 12,
-			created_at: "2024 JAN 02",
-		},
-		{
-			id: "2",
-			title: "CARTELO-Veste brodée de haute qualité pour homme",
-			image,
-			description: "vsdkj bvjsdk vsdbjk vdbsjk vcsdhk csdhk vbsdhk",
-			price: 12,
-			created_at: "2024 JAN 02",
-		},
-		{
-			id: "3",
-			title: "CARTELO-Veste brodée de haute qualité pour homme",
-			image,
-			description: "vsdkj bvjsdk vsdbjk vdbsjk vcsdhk csdhk vbsdhk",
-			price: 12,
-			created_at: "2024 JAN 02",
-		},
-		{
-			id: "4",
-			title: "CARTELO-Veste brodée de haute qualité pour homme",
-			image,
-			description: "vsdkj bvjsdk vsdbjk vdbsjk vcsdhk csdhk vbsdhk",
-			price: 12,
-			created_at: "2024 JAN 02",
-		},
-		{
-			id: "5",
-			title: "CARTELO-Veste brodée de haute qualité pour homme",
-			image,
-			description: "vsdkj bvjsdk vsdbjk vdbsjk vcsdhk csdhk vbsdhk",
-			price: 12,
-			created_at: "2024 JAN 02",
-		},
-		{
-			id: "6",
-			title: "CARTELO-Veste brodée de haute qualité pour homme",
-			image,
-			description: "vsdkj bvjsdk vsdbjk vdbsjk vcsdhk csdhk vbsdhk",
-			price: 12,
-			created_at: "2024 JAN 02",
-		},
-		{
-			id: "7",
-			title: "CARTELO-Veste brodée de haute qualité pour homme",
-			image,
-			description: "vsdkj bvjsdk vsdbjk vdbsjk vcsdhk csdhk vbsdhk",
-			price: 12,
-			created_at: "2024 JAN 02",
-		},
+		t("jeans"),
+		t("shorts"),
+		t("shirt"),
+		t("suit"),
 	];
 
 	useEffect(() => {
-		// fetch products data by item name
-	}, [activeItem]);
+		setActiveItem(t("all"))
+	}, [locale])
+
+	// useEffect(() => {
+	// 	// fetch products data by item name
+	// }, [activeItem]);
 
 	return (
 		<main>
-			<div className="products_area bg-secondary flex flex-grow flex-col gap-7 rounded-2xl p-8">
+			<div className="w-full bg-secondary flex flex-grow flex-col gap-7 rounded-2xl p-4 md:p-8">
 				<div className="title flex-between">
 					<h3 className="text-primary">Men Products</h3>
-					<Button>
-						<span>Add a new product</span>
+					<Button onClick={() => all.setCreatingProduct(true)}>
+						<span className="hidden md:block">Add a new product</span>
 						<Image
 							src={plusSvg}
 							alt="plus icon"
@@ -103,7 +52,7 @@ export default function page() {
 					</Button>
 				</div>
 				<div className="items flex-between gap-3">
-					<div className="flex gap-2 overflow-x-auto">
+					<div className="flex gap-2 overflow-x-hidden">
 						{activeItem &&
 							itemsData.map((item, idx) => (
 								<Button
@@ -116,50 +65,22 @@ export default function page() {
 							))}
 					</div>
 					<Button variant="outline">
-						{t("sort")} <MdSort />
+						<span className="hidden md:block">{t("sort")}</span>
+						<MdSort />
 					</Button>
 				</div>
-				<div className="list w-full">
-					{data.map((product) => (
-						<ProductCard
-							key={product.id}
-							className="overflow-hidden"
-							variant={`${
-								selectedProduct.id === product.id ? "pressed" : "default"
-							}`}
-							onClick={() => setSelectedProduct(product)}
-						>
-							<div className="flex flex-col w-full gap-2">
-								<Image
-									src={product.image}
-									alt={product.title}
-									className="w-full h-full rounded-lg"
-								/>
-								<h4 className="line-clamp-3 font-semibold text-sm">{product.title}</h4>
-							</div>
-							<div className="flex-between w-full font-bold">
-								<h4
-									className={`${
-										selectedProduct.id === product.id
-											? "text-priceColor"
-											: "text-price"
-									}`}
-								>
-									{product.price} $
-								</h4>
-								<span
-									className={`${
-										selectedProduct.id === product.id ? "" : "text-primary"
-									}`}
-								>
-									New
-								</span>
-							</div>
-						</ProductCard>
-					))}
-				</div>
+				<ProductList
+					selectedProduct={all.selectedProduct}
+					setSelectedProduct={all.setSelectedProduct}
+				/>
 			</div>
-			{selectedProduct && <div className="product_details"></div>}
+			{all.creatingProduct && <CreateProduct toggle={all.setCreatingProduct} />}
+			{all.selectedProduct.id && (
+				<ProductDetail
+					product={all.selectedProduct}
+					toggle={all.setSelectedProduct}
+				/>
+			)}
 		</main>
 	);
 }

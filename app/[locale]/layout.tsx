@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import React, { ReactNode } from "react";
-import Layout from "@/components/layout";
+import Nav from "@/components/nav";
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
 	title: "YL store",
@@ -13,14 +14,16 @@ interface RootLayoutProps {
 	params: { locale: string };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 	params: { locale },
 }: RootLayoutProps) {
 	return (
 		<html lang={locale}>
 			<body>
-				<Layout>{children}</Layout>
+				<Nav lng={locale} />
+				{children}
+				<Footer />
 			</body>
 		</html>
 	);

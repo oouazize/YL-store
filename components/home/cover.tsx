@@ -1,9 +1,10 @@
 import patternPad from "@/public/assets/patternpad.svg";
 import Image from "next/image";
-import { getScopedI18n } from "@/locales/server";
+import {useTranslation} from '@/app/i18n';
 
-export default async function Cover() {
-	const t = await getScopedI18n("cover");
+export default async function Cover({ lng }: { lng: string }) {
+	const { t } = await useTranslation(lng, 'home');
+
 	return (
 		<section className="h-[calc(100vh-64px)]">
 			<article className="flex-center flex-col text-center h-full gap-6">
