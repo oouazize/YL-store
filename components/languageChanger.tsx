@@ -1,37 +1,32 @@
 "use client";
+
 import React from "react";
 import { useChangeLocale, useCurrentLocale } from "@/locales/client";
 import Image from "next/image";
 import lang from "@/public/assets/language.png";
+import { languages } from "@/app/i18n/settings";
 
-const LocaleSwitcher = () => {
+const LanguageChanger = () => {
 	const changeLocale = useChangeLocale();
 	const currentLocale = useCurrentLocale();
 	return (
-		<div className="sl-nav flex-center gap-2 cursor-pointer">
+		<div className="accordinate flex-center gap-2 cursor-pointer">
 			<Image src={lang} alt="lang" />
 			<ul>
 				<li>
 					<b className="hidden md:block">{currentLocale}</b>
-					<i className="fa fa-angle-down" aria-hidden="true"></i>
 					<div className="triangle"></div>
 					<ul className="ul">
-						<li onClick={() => changeLocale("en")}>
-							<i className="sl-flag flag-usa">
-								<div id="english"></div>
-							</i>
-							<span className={`${currentLocale === "en" ? "active" : ""}`}>
-								English
-							</span>
-						</li>
-						<li onClick={() => changeLocale("fr")}>
-							<i className="sl-flag flag-fr">
-								<div id="french"></div>
-							</i>
-							<span className={`${currentLocale !== "en" ? "active" : ""}`}>
-								French
-							</span>
-						</li>
+						{languages.map((lng) => (
+							<li key={lng} onClick={() => changeLocale(lng as "en" | "fr")}>
+								<i className={`sl-flag flag-${lng}`}>
+									<div id={lng}></div>
+								</i>
+								<span className={`${currentLocale === lng ? "active" : ""}`}>
+									{lng === "en" ? "English" : "French"}
+								</span>
+							</li>
+						))}
 					</ul>
 				</li>
 			</ul>
@@ -39,4 +34,4 @@ const LocaleSwitcher = () => {
 	);
 };
 
-export default LocaleSwitcher;
+export default LanguageChanger;

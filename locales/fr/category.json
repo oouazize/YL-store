@@ -1,11 +1,1 @@
-{
-	"all": "Tous les produits",
-	"jacket": "Une veste",
-	"jeans": "Un jean",
-	"shirt": "Une chemise",
-	"shorts": "Shorts",
-	"sort": "Trier par",
-	"suit": "Un costume",
-	"sweater": "Un chandail",
-	"tshirt": "Un t-shirt"
-}
+{"all":"Tous les produits","sort":"Trier par","suit":"Un costume","jeans":"Un jean","shirt":"Une chemise","jacket":"Une veste","shorts":"Shorts","tshirt":"Un t-shirt","sweater":"Un chandail"}

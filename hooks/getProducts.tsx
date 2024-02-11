@@ -1,9 +1,7 @@
 // import { supabaseForClientComponent as supabase } from '@/lib/supabase.client';
-import { createSupabaseForServerComponent } from "@/lib/supabase.server";
-import "server-only";
+import { supabaseForClientComponent as supabase } from "@/lib/supabase.client";
+// import "server-only";
 
-export async function getProducts() {
-	const supabase = createSupabaseForServerComponent();
-
+export function getProducts() {
 	return supabase.from("product").select("*");
 }

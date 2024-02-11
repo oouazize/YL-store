@@ -1,11 +1,1 @@
-{
-	"all": "All products",
-	"jacket": "A jacket",
-	"jeans": "A jeans",
-	"shirt": "A shirt",
-	"shorts": "Shorts",
-	"sort": "Sort by",
-	"suit": "A suit",
-	"sweater": "A sweater",
-	"tshirt": "A T-shirt"
-}
+{"all":"All products","sort":"Sort by","suit":"A suit","jeans":"A jeans","shirt":"A shirt","jacket":"A jacket","shorts":"Shorts","tshirt":"A T-shirt","sweater":"A sweater"}

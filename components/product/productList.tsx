@@ -1,79 +1,64 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ProductCard from "./productCard";
 import Image from "next/image";
 import { product } from "@/type";
-import image from "@/public/assets/menClothes.jpg";
+import { supabaseForClientComponent as supabase } from "@/lib/supabase.client";
 
-import { supabaseForClientComponent } from "@/lib/supabase.client";
-import { getProducts } from "@/hooks/getProducts";
+export default function ProductList({
+	fetchingType,
+	category,
+	selectedProduct,
+	setSelectedProduct,
+}: {
+	fetchingType: "all" | "title" | "sizes";
+	category: string;
+	selectedProduct: product;
+	setSelectedProduct: React.Dispatch<React.SetStateAction<product>>;
+}) {
+	console.log(fetchingType);
+	const [dataProducts, setDataProducts] = useState<product[]>([]);
 
-export default function ProductList({ selectedProduct, setSelectedProduct }: { selectedProduct: product, setSelectedProduct: React.Dispatch<React.SetStateAction<product>> }) {
+	const getDataWithImages = async (data: product[]) => {
+		return Promise.all(
+			data.map(async (product) => {
+				const productImages = product.images.map((imagePath) => {
+					return supabase.storage.from("images").getPublicUrl(imagePath).data
+						.publicUrl;
+				});
+				return { ...product, images: productImages };
+			})
+		);
+	};
 
-    // const { data, error } = await getProducts();
-    // console.log(data)
-	const data: product[] = [
-		{
-			id: "1",
-			title: "CARTELO-Veste brodée de haute qualité pour homme",
-			images: [image, image, image, image, image, image, image],
-			description: "vsdkj bvjsdk vsdbjk vdbsjk vcsdhk csdhk vbsdhk",
-			price: 12,
-			created_at: "2024 JAN 02",
-		},
-		{
-			id: "2",
-			title: "CARTELO-Veste brodée de haute qualité pour homme",
-			images: [image, image, image, image, image, image, image],
-			description: "vsdkj bvjsdk vsdbjk vdbsjk vcsdhk csdhk vbsdhk",
-			price: 12,
-			created_at: "2024 JAN 02",
-		},
-		{
-			id: "3",
-			title: "CARTELO-Veste brodée de haute qualité pour homme",
-			images: [image, image, image, image, image, image, image],
-			description: "vsdkj bvjsdk vsdbjk vdbsjk vcsdhk csdhk vbsdhk",
-			price: 12,
-			created_at: "2024 JAN 02",
-		},
-		{
-			id: "4",
-			title: "CARTELO-Veste brodée de haute qualité pour homme",
-			images: [image, image, image, image, image, image, image],
-			description: "vsdkj bvjsdk vsdbjk vdbsjk vcsdhk csdhk vbsdhk",
-			price: 12,
-			created_at: "2024 JAN 02",
-		},
-		{
-			id: "5",
-			title: "CARTELO-Veste brodée de haute qualité pour homme",
-			images: [image, image, image, image, image, image, image],
-			description: "vsdkj bvjsdk vsdbjk vdbsjk vcsdhk csdhk vbsdhk",
-			price: 12,
-			created_at: "2024 JAN 02",
-		},
-		{
-			id: "6",
-			title: "CARTELO-Veste brodée de haute qualité pour homme",
-			images: [image, image, image, image, image, image, image],
-			description: "vsdkj bvjsdk vsdbjk vdbsjk vcsdhk csdhk vbsdhk",
-			price: 12,
-			created_at: "2024 JAN 02",
-		},
-		{
-			id: "7",
-			title: "CARTELO-Veste brodée de haute qualité pour homme",
-			images: [image, image, image, image, image, image, image],
-			description: "vsdkj bvjsdk vsdbjk vdbsjk vcsdhk csdhk vbsdhk",
-			price: 12,
-			created_at: "2024 JAN 02",
-		},
-	];
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				let query = supabase
+					.from("product")
+					.select("*")
+					.eq("category", category);
 
+				if (fetchingType !== "all")
+					query = query.order(fetchingType, { ascending: true });
+				const { data, error } = await query;
+				if (error) {
+					throw error;
+				}
+				const response = await getDataWithImages(data as product[]);
+				setDataProducts(response);
+			} catch (error) {
+				console.error("Error fetching data:", error.message);
+			}
+		};
+
+		fetchData();
+	}, [fetchingType]); // Empty dependency array ensures this effect runs only once on component mount
+
+	console.log(dataProducts);
 	return (
 		<div className="list w-full">
-			{data?.map((product: any) => (
+			{dataProducts?.map((product: any) => (
 				<ProductCard
 					key={product.id}
 					className="product-card overflow-hidden"
@@ -82,33 +67,37 @@ export default function ProductList({ selectedProduct, setSelectedProduct }: { s
 					}`}
 					onClick={() => setSelectedProduct(product)}
 				>
-					<div className="flex flex-col w-full gap-2">
+					<div className="flex flex-col w-full h-3/5">
 						<Image
 							src={product.images[0]}
 							alt={product.title}
+							width={200}
+							height={200}
 							className="w-full h-full rounded-lg"
 						/>
-						<h4 className="line-clamp-3 font-semibold text-sm">
+					</div>
+					<div className="flex flex-col gap-2 justify-between w-full flex-grow flex-grow font-bold">
+						<h4 className="line-clamp-3 max-h-[74px] font-semibold text-sm">
 							{product.title}
 						</h4>
-					</div>
-					<div className="flex-between w-full font-bold">
-						<h4
-							className={`${
-								selectedProduct.id === product.id
-									? "text-priceColor"
-									: "text-price"
-							}`}
-						>
-							{product.price} $
-						</h4>
-						<span
-							className={`${
-								selectedProduct.id === product.id ? "" : "text-primary"
-							}`}
-						>
-							New
-						</span>
+						<div className="flex-between">
+							<h4
+								className={`${
+									selectedProduct.id === product.id
+										? "text-priceColor"
+										: "text-price"
+								}`}
+							>
+								{product.price} $
+							</h4>
+							<span
+								className={`${
+									selectedProduct.id === product.id ? "" : "text-primary"
+								}`}
+							>
+								New
+							</span>
+						</div>
 					</div>
 				</ProductCard>
 			))}

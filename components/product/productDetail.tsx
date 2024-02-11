@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { product } from "../../type";
 import Button from "@/components/ui/button";
 import DescriptionTab from "./descriptionTab";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import ToggleOff from "../toggleOff";
 
 // TabButton component
@@ -22,12 +22,14 @@ const TabButton = ({
 );
 
 // ImagesTab component
-const ImagesTab = ({ images }: { images: StaticImageData[] }) => (
+const ImagesTab = ({ images }: { images: string[] }) => (
 	<div className="w-full h-[63vh] flex flex-col gap-5 overflow-auto scroll-bar">
 		{images.map((image) => (
 			<Image
 				src={image}
 				alt="Product Image"
+				width={200}
+				height={200}
 				className="w-full h-60 rounded-lg"
 			/>
 		))}
@@ -82,7 +84,7 @@ export default function ProductDetail({
 	return (
 		<div className="w-[30%] max-w-[400px] rounded-2xl p-8 flex flex-col gap-7 bg-secondary">
 			<div className="relative">
-				<h3>Details</h3>	
+				<h3>Details</h3>
 				<ToggleOff toggle={toggle} />
 			</div>
 			<div className="flex-center w-full gap-2">
