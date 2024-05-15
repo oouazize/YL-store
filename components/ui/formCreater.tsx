@@ -1,178 +1,59 @@
-import React from "react";
 import { cn } from "@/lib/utils";
-import Button from "./button";
+import { FormikControlProps } from "@/type";
+import { ErrorMessage, Field } from "formik";
+import React from "react";
 
-const Form = React.forwardRef<
-	HTMLDivElement,
-	React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-	<div ref={ref} className={cn("rounded-2xl shadow", className)} {...props} />
-));
-Form.displayName = "Form";
+type FormikPropsWithoutControl = Omit<FormikControlProps, "control">;
 
-const FormHeader = React.forwardRef<
-	HTMLDivElement,
-	React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-	<div
-		ref={ref}
-		className={cn("flex flex-col space-y-1.5 p-6", className)}
-		{...props}
-	/>
-));
-FormHeader.displayName = "FormHeader";
+export function textError({ children }: { children?: React.ReactNode }) {
+	return <div className="text-red-600">{children}</div>;
+}
 
-const FormTitle = React.forwardRef<
-	HTMLParagraphElement,
-	React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
-	<h3
-		ref={ref}
-		className={cn("font-semibold leading-none tracking-tight", className)}
-		{...props}
-	/>
-));
-FormTitle.displayName = "FormTitle";
+// export default function FormikControl({ control, ...props }: FormikControlProps) {
+// 	switch (control) {
+// 		case "input":
+// 			return <Input {...props} />;
+// 		case "textarea":
+// 			return <Input as="textarea" {...props} />;
+// 		case "select": <Input as="select" {...props} />;
+// 		case "file":
+// 		default:
+// 			return null;
+// 	}
+// }
 
-const FormDescription = React.forwardRef<
-	HTMLParagraphElement,
-	React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-	<p ref={ref} className={cn("text-sm text-gray", className)} {...props} />
-));
-FormDescription.displayName = "FormDescription";
-
-const FormContent = React.forwardRef<
-	HTMLDivElement,
-	React.HTMLAttributes<HTMLDivElement> & {
-		label: string;
-		onInputChange: (value: string) => void;
-	}
->(({ className, label, onInputChange, ...props }, ref) => (
-	<div
-		ref={ref}
-		className={cn("flex flex-col space-y-1.5 p-6 pt-0", className)}
-		{...props}
-	>
-		<label className="text-sm font-semibold text-primary" htmlFor="name">
-			{label}
-		</label>
-		<input
-			className="input-field pt-0"
-			id="name"
-			placeholder={label}
-			onChange={(e) => onInputChange(e.target.value)}
-		/>
-	</div>
-));
-FormContent.displayName = "FormContent";
-
-const FormUpload = React.forwardRef<
-	HTMLDivElement,
-	React.HTMLAttributes<HTMLDivElement> & {
-		label: string;
-		onInputChange: (value: FileList | null) => void;
-	}
->(({ className, label, onInputChange, ...props }, ref) => (
-	<div
-		ref={ref}
-		className={cn("flex flex-col space-y-1.5 p-6 pt-0", className)}
-		{...props}
-	>
-		<label className="text-sm font-semibold text-primary" htmlFor="name">
-			{label}
-		</label>
-
-		<input
-			className="input-field pt-0"
-			type="file"
-			accept="image/*"
-			onChange={(e) => onInputChange(e.target.files)}
-		/>
-	</div>
-));
-FormUpload.displayName = "FormUpload";
-
-const FormMultiSelect = React.forwardRef<
-	HTMLDivElement,
-	React.HTMLAttributes<HTMLDivElement> & {
-		label: string;
-		handleMultiSelectChange: (values: string[]) => void;
-	}
->(({ className, label, handleMultiSelectChange, ...props }, ref) => (
-	<div
-		ref={ref}
-		className={cn("flex flex-col space-y-1.5 p-6 pt-0", className)}
-		{...props}
-	>
-		<label className="text-sm font-semibold text-primary" htmlFor="name">
-			{label}
-		</label>
-		<select
-			multiple
-			onChange={(e) =>
-				handleMultiSelectChange(
-					Array.from(e.target.selectedOptions, (option) => option.value)
-				)
-			}
-		>
-			<option>S</option>
-			<option>M</option>
-			<option>L</option>
-			<option>XL</option>
-			<option>XXL</option>
-		</select>
-	</div>
-));
-FormMultiSelect.displayName = "FormMultiSelect";
-
-const FormSelect = React.forwardRef<
-	HTMLDivElement,
-	React.HTMLAttributes<HTMLDivElement> & {
-		label: string;
-		handleSelectChange: (values: string) => void;
-	}
->(({ className, label, handleSelectChange, ...props }, ref) => (
-	<div
-		ref={ref}
-		className={cn("flex flex-col space-y-1.5 p-6 pt-0", className)}
-		{...props}
-	>
-		<label className="text-sm font-semibold text-primary" htmlFor="name">
-			{label}
-		</label>
-		<select onChange={(e) => handleSelectChange(e.target.value)}>
-			<option>S</option>
-			<option>M</option>
-			<option>L</option>
-			<option>XL</option>
-			<option>XXL</option>
-		</select>
-	</div>
-));
-FormSelect.displayName = "FormSelect";
-
-const FormFooter = React.forwardRef<
-	HTMLDivElement,
-	React.HTMLAttributes<HTMLDivElement> & {
-		name: string;
-		variant?: "primary" | "secondary" | "outline";
-	}
->(({ variant, name }) => (
-	<div className="p-6 pt-0">
-		<Button variant={variant}>{name}</Button>
-	</div>
-));
-FormFooter.displayName = "FormFooter";
-
-export {
-	Form,
-	FormHeader,
-	FormFooter,
-	FormTitle,
-	FormDescription,
-	FormContent,
-	FormSelect,
-	FormMultiSelect,
-	FormUpload,
+export const InputContent: React.FC<FormikPropsWithoutControl> = ({
+	className,
+	name,
+	label,
+	type,
+	options,
+	style,
+	...props
+}) => {
+	return (
+		<div className={cn("flex flex-col space-y-1.5", className)} {...props}>
+			<label className="text-sm font-semibold text-primary" htmlFor={name}>
+				{label}
+			</label>
+			<Field
+				as={type || "text"}
+				id={name}
+				name={name}
+				className={style}
+				{...props}
+			>
+				{options?.map((option: any) => (
+					<option
+						className="text-secondary"
+						key={option.value}
+						value={option.value}
+					>
+						{option.key}
+					</option>
+				))}
+			</Field>
+			<ErrorMessage name={name} component={textError} />
+		</div>
+	);
 };

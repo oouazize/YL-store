@@ -1,21 +1,23 @@
 // "use client";
 
-import { z } from "zod";
+import * as Yup from "yup";
 
-export const formSchema = z.object({
-	title: z.string().trim().min(1, { message: "A title is required" }),
-	price: z.string().refine(price => !isNaN(Number(price)) && Number(price) > 0, {message: 'A price is required'}).transform(price => Number(price)),
-	description: z.string().trim().optional(),
-	images: z.any(), // You may need to define a schema for files
-	item: z.string(),
-	sizes: z.array(z.string()),
+export const validationSchema = Yup.object({
+	titleEN: Yup.string().trim().required("A title is required in both English and French"),
+	titleFR: Yup.string().trim().required("A title is required in both English and French"),
+	price: Yup.number().required('A price is required').transform(price => Number(price)),
+	descriptionEN: Yup.string().trim().optional(),
+	descriptionFR: Yup.string().trim().optional(),
+	images: Yup.mixed(), // You may need to define a schema for files
+	item: Yup.string().required('Required'),
+	sizes: Yup.array().of(Yup.string()).required('Required'),
 });
 
-const newProductSchema = z.object({
-	title: z.string(),
-	price: z.number(),
-	description: z.string(),
-	images: z.array(z.any()), // You may need to define a schema for files
-	item: z.string(),
-	sizes: z.array(z.string()),
+const newProductSchema = Yup.object({
+	title: Yup.string(),
+	price: Yup.number(),
+	description: Yup.string(),
+	images: Yup.array(), // You may need to define a schema for files
+	item: Yup.string(),
+	sizes: Yup.array(Yup.string()),
 });

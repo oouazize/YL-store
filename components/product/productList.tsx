@@ -11,7 +11,7 @@ export default function ProductList({
 	selectedProduct,
 	setSelectedProduct,
 }: {
-	fetchingType: "all" | "title" | "sizes";
+	fetchingType: "all" | "title" | "price";
 	category: string;
 	selectedProduct: product;
 	setSelectedProduct: React.Dispatch<React.SetStateAction<product>>;
@@ -47,7 +47,7 @@ export default function ProductList({
 				}
 				const response = await getDataWithImages(data as product[]);
 				setDataProducts(response);
-			} catch (error) {
+			} catch (error: any) {
 				console.error("Error fetching data:", error.message);
 			}
 		};
@@ -76,7 +76,7 @@ export default function ProductList({
 							className="w-full h-full rounded-lg"
 						/>
 					</div>
-					<div className="flex flex-col gap-2 justify-between w-full flex-grow flex-grow font-bold">
+					<div className="flex flex-col gap-2 justify-between w-full flex-grow font-bold">
 						<h4 className="line-clamp-3 max-h-[74px] font-semibold text-sm">
 							{product.title}
 						</h4>

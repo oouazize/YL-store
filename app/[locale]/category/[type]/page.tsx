@@ -19,7 +19,7 @@ export default function page({
 	const all = productList(locale);
 	const { t } = useTranslation(locale, "category");
 	const [activeItem, setActiveItem] = useState("");
-	const [fetchingType, setFetchingType] = useState<"all" | "title" | "sizes">(
+	const [fetchingType, setFetchingType] = useState<"all" | "title" | "price">(
 		"all"
 	);
 	const itemsData = [
@@ -37,13 +37,9 @@ export default function page({
 		setActiveItem(t("all"));
 	}, [locale]);
 
-	// useEffect(() => {
-	// 	// fetch products data by item name
-	// }, [activeItem]);
-
 	return (
 		<main>
-			<div className="w-full bg-secondary flex flex-grow flex-col gap-7 rounded-2xl p-4 md:p-8">
+			<div className="w-full bg-secondary flex flex-col gap-7 rounded-2xl p-4 md:p-8">
 				<div className="title flex-between">
 					<h3 className="text-primary">Men Products</h3>
 					<Link href="/newProduct">
@@ -80,8 +76,8 @@ export default function page({
 									<li onClick={() => setFetchingType("title")}>
 										<span>Name</span>
 									</li>
-									<li onClick={() => setFetchingType("sizes")}>
-										<span>Size</span>
+									<li onClick={() => setFetchingType("price")}>
+										<span>Price</span>
 									</li>
 								</ul>
 							</li>

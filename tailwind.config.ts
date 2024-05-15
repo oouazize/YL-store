@@ -8,20 +8,15 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
-			backgroundColor: {
-				primary: "#F2F2F2",
-				secondary: "#1F1F1F",
-			},
-			borderColor: {
-				primary: "#F2F2F2",
-				secondary: "#1F1F1F",
-			},
 			colors: {
 				primary: "#F2F2F2",
 				secondary: "#1F1F1F",
+				input: "#27272A",
+				holder: "#c3c4c3",
 				gray: "#4F4F4F",
 				priceColor: "#0050E6",
 				price: "#72A1F7",
+				danger: "#F31260",
 			},
 		},
 	},
